@@ -1,9 +1,9 @@
 <?php
 require_once 'header.php';
 
-// ini_set('display_errors', 0);
-// ini_set('display_startup_errors', 0);
-// error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(E_ALL);
 
 session_start();
 require_once "ascii.php";
@@ -24,35 +24,35 @@ $p = (int)$_SESSION['num']['p'];
 $q = (int)$_SESSION['num']['q'];
 $n = $p * $q;
 
-$j = 1;
+$halfBinaryIndex = 1;
 foreach($arrSurname as $val){
-    $polBinary[$j++] = str_split(decbin($ascii[$val]), 4);
+    $halfBinary[$halfBinaryIndex++] = str_split(decbin($ascii[$val]), 4);
 }
 
 $b = 1;
-$countPolBinary = count($polBinary);
-for($i = 1; $i <= $countPolBinary; $i++)
+$countHalfBinary = count($halfBinary);
+for($i = 1; $i <= $countHalfBinary; $i++)
 {
-    $newBinary[$b++] = (string)1111 . $polBinary[$i][0];
-    $newBinary[$b++] = (string)1111 . $polBinary[$i][1];
+    $halfSymbolBinary[$b++] = (string)1111 . $halfBinary[$i][0];
+    $halfSymbolBinary[$b++] = (string)1111 . $halfBinary[$i][1];
 }
 
 $H = "00000000";
-$countNewBinary = count($newBinary);
+$countHalfSymbolBinary = count($halfSymbolBinary);
 if($_SESSION['num'] !== NULL){
-for($s = 1; $s <= $countNewBinary; $s++)
+for($iterationIndex = 1; $iterationIndex <= $countHalfSymbolBinary; $iterationIndex++)
 {
     echo "<div>";
-    echo "<h1>Итерация $s</h1>";
-    $sTran = $s - 1; 
-    echo "M$s = " . $newBinary[$s] . '<br>';
+    echo "<h1>Итерация $iterationIndex</h1>";
+    $sTran = $iterationIndex - 1; 
+    echo "M$iterationIndex = " . $halfSymbolBinary[$iterationIndex] . '<br>';
     echo "H$sTran = " . $H . '<br>';
-    $sum = myXor($newBinary[$s], $H);
+    $sum = myXor($halfSymbolBinary[$iterationIndex], $H);
     echo "M+H = " . $sum . " = " . bindec($sum) . '<br>';
     $fullsum = pow(bindec($sum), 2) % $n;
     echo "(M+H)^2mod($n) = " . $fullsum . '<br>';
     $H = decbin($fullsum);
-    echo "H$s = " . $H . '<br>';
+    echo "H$iterationIndex = " . $H . '<br>';
     echo "</div>";
 }}
 ?>

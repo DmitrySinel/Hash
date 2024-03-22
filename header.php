@@ -7,7 +7,3 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <header>
-        <a href="index.php">Хеш</a>
-        <a href="translateIP.php">Перевод</a>
-    </header>
