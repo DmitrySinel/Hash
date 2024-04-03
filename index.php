@@ -11,7 +11,7 @@ require_once "ascii.php";
 <div id="mainform">
 <form action="inputnum.php" method="post" enctype="multipart/form-data">
     <h1>Введите данные</h1>
-    <input type="text" name="surname" placeholder="Введите фамилию" value="<?php echo old('surname') ?>"></input><br>
+    <input type="text" name="surname" placeholder="Введите строку" value="<?php echo old('surname') ?>"></input><br>
     <input type="text" name="p" placeholder="Значение p" value="<?php echo old('p') ?>"></input><br>
     <input type="text" name="q" placeholder="Значение q" value="<?php echo old('q') ?>"></input><br>
     <input type="submit" value="Решить">
@@ -19,10 +19,22 @@ require_once "ascii.php";
 </div><br>
 
 <?php
-$arrSurname = str_split((string)$_SESSION['num']['surname'], 2);
+$surname = (string)$_SESSION['num']['surname'];
 $p = (int)$_SESSION['num']['p'];
 $q = (int)$_SESSION['num']['q'];
 $n = $p * $q;
+
+if($p == 0 || $q == 0 || $surname == ""){
+    echo "<h3>Заполните все поля</h3>";
+    exit(0);
+}
+
+if(primeCheck($p) == 0 || primeCheck($q) == 0){
+    echo "<h3>Числа не являются простыми</h3>";
+    exit(0);
+}
+
+$arrSurname = str_split($surname, 2);
 
 $halfBinaryIndex = 1;
 foreach($arrSurname as $val){
@@ -39,7 +51,7 @@ for($i = 1; $i <= $countHalfBinary; $i++)
 
 $H = "00000000";
 $countHalfSymbolBinary = count($halfSymbolBinary);
-if($_SESSION['num'] !== NULL){
+
 for($iterationIndex = 1; $iterationIndex <= $countHalfSymbolBinary; $iterationIndex++)
 {
     echo "<div>";
@@ -54,7 +66,9 @@ for($iterationIndex = 1; $iterationIndex <= $countHalfSymbolBinary; $iterationIn
     $H = decbin($fullsum);
     echo "H$iterationIndex = " . $H . '<br>';
     echo "</div>";
-}}
+}
+
+echo "<div><h1>Результат: $H</h1></div>";
 ?>
 </body>
 </html>

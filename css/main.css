@@ -86,3 +86,10 @@ span{
     padding: 2px 20px;
     display: inline-block;
 }
+
+h3 {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    color: rgb(212, 82, 82);
+}
